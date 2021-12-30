@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Loading from '../consys/Loading';
 import searchCss from './search.css';
 import utilsCss from '../consys/utils.css'
-import swapi from 'swapi-wrapper';
 import http from '../consys/http';
 
 const FormItem = Form.Item;
