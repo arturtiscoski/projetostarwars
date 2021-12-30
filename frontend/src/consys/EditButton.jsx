@@ -1,30 +1,16 @@
 import React, { Component } from 'react';
-import {Button, Tooltip, Icon} from 'antd';
+import {Button, Tooltip} from 'antd';
 import PropTypes from 'prop-types';
-import utilsCss from './utils.css';
+import { EyeOutlined } from '@ant-design/icons';
 
 class EditButton extends Component {
   render() {
-    const {className, noLink, onEdit, flat, view} = this.props;
-    const icon = view ? "eye-o" : "edit";
+    const {className, onEdit} = this.props;
     return (
-      <Tooltip title={view ? "Visualizar" : "Editar"}>
-        {flat ? 
-          <span className={className ? className : utilsCss.h2}
-            onClick={onEdit ? onEdit : null}>
-            {noLink ? 
-              <Icon type={icon}/>
-            :
-            <a className={className}>
-              <Icon type={icon}/>
-            </a>
-            }
-          </span> 
-          :
-          <Button icon={icon}
-            onClick={onEdit ? onEdit : null}
-            className={className}/>
-        }
+      <Tooltip title={"Editar"}>
+        <Button icon={<EyeOutlined/>}
+          onClick={onEdit ? onEdit : null}
+          className={className}/>
       </Tooltip>
     );
   }

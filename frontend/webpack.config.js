@@ -3,9 +3,8 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   output: {
-    path: path.resolve(__dirname, '../backend/dist'),
+    path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    chunkFilename: 'chunk[name].js',
     publicPath: '/'
   },
   watch: true,

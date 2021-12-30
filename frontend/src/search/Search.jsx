@@ -1,39 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Card, Col, Input, notification } from 'antd';
+import { Row, Card, Col, Input, notification, Pagination } from 'antd';
 import http from '../consys/http';
 import Screen from '../consys/Screen';
 import CardItem from '../consys/CardItem';
 import documentTitle from '../consys/documentTitle';
 import searchCss from './search.css';
+import utilsCss from "../consys/utils.css";
 import SearchItem from './SearchItem';
 
 const urlSearch = '/painel/search';
 
 function Search() {
   const [data, setData] = useState([]);
-  const [filtro, setFiltro] = useState('');
+  const [search, setSearch] = useState('');
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    documentTitle.set("Doenças");
+    documentTitle.set("Star wars");
   }, [])
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLoading(true);
-      fetch({ filtro });
+      fetch({ search });
     }, 300);
 
     return () => { clearTimeout(timeout); }
-  }, [filtro]);
+  }, [search]);
 
-  const fetch = (params = { filtro: '' }) => {
+  const fetch = (params = { page: 1 }) => {
+    console.log('params', params);
+    if (!params.search) {
+      params = {...params, search}
+    }
+    console.log('params depoix', params);
     setLoading(true)
-    http('/search/list', {
+    http('https://swapi.dev/api/people/', {
       method: 'GET',
-      params
+      params,
+      api: false
     }).then((result) => {
-      setData(result);
+      console.log('result', result);
+      setData(result.results);
+      setTotal(result.count);
       setLoading(false);
     }).catch((err) => {
       notification.error({
@@ -56,12 +66,12 @@ function Search() {
             <Col md={20}
               xs={24}>
               <Input placeholder='Filtrar...'
-                onChange={({ target: { value } }) => setFiltro(value)} />
+                onChange={({ target: { value } }) => setSearch(value)} />
             </Col>
           </Col>
         </Row>
       </Card>
-      <Card className={searchCss.card}
+      <Card className={[searchCss.card, utilsCss.mb1].join(' ')}
         loading={loading}>
         <CardItem data={data}>
           {data.map((item, index) => (
@@ -72,6 +82,16 @@ function Search() {
           ))}
         </CardItem>
       </Card>
+      <Row wrap={false}
+        justify='end'>
+        <Col flex='none'>
+          <Pagination defaultCurrent={1}
+            total={total}
+            showSizeChanger={false}
+            disabled={loading}
+            onChange={(page) => fetch({page})}/>
+        </Col> 
+      </Row>
     </Screen>
   );
 }

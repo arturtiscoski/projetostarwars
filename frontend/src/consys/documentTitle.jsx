@@ -1,8 +1,6 @@
-import Config from './Config';
-
 let documentTitle = {
   set(str) {
-    const title = str.concat(' - ', Config.get('projectName'))
+    const title = str
     var link = document.querySelector("title") || document.createElement('title');
     link.innerHtml = title;
     document.title = title;

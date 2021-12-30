@@ -4,7 +4,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const compression = require('compression')
-const routers = require('./server/services/router')
 const app = express();
 
 let httpServer;
@@ -18,8 +17,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(compression());
-
-app.use('/api', routers);
 
 app.use(express.static(path.join(__dirname, '/dist')));
 
